@@ -1,0 +1,14 @@
+aWYgZHBvcnQ9PSIyMSI6CglyYXc9cmF3WzA6LTVdCgl1c2VyPXJlLmZpbmRhbGwoIig/aSlVU0VSICguKikiLHJhdykKCXB3PXJlLmZpbmRhbGwoIig/aSlQQVNTICguKikiLHJhdykKCWlmIHVzZXI6CgkJaW5mbz1pbmZvKyJmdHAgdXNlcjoiK3VzZXJbMF0KCQlwcmludChpbmZvKQoJCWlzTGVhaz1UcnVlCglpZiBwdzoKCQlpbmZvID0gaW5mbysiZnRwIHBhc3M6Iitwd1swXQoJCXByaW50KGluZm8pCgkJaXNMZWFrPVRydWU=
+'''if dport=="21":\n\traw=raw[0:-5]\n\tuser=re.findall("(?i)USER (.*)",raw)\n\tpw=re.findall("(?i)PASS (.*)",raw)\n\tif user:\n\t\tinfo=info+"ftp user:"+user[0]\n\t\tprint(info)\n\t\tisLeak=True\n\tif pw:\n\t\tinfo = info+"ftp pass:"+pw[0]\n\t\tprint(info)\n\t\tisLeak=True'''
+if dport=="21":
+	raw=raw[0:-5]
+	user=re.findall("(?i)USER (.*)",raw)
+	pw=re.findall("(?i)PASS (.*)",raw)
+	if user:
+		info=info+"ftp user:"+user[0]
+		print(info)
+		isLeak=True
+	if pw:
+		info = info+"ftp pass:"+pw[0]
+		print(info)
+		isLeak=True

